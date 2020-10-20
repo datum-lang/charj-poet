@@ -16,3 +16,4 @@ pub mod type_name;
 pub mod type_spec;
 pub mod type_variable_name;
 pub mod wildcard_type_name;
+pub mod operator;
