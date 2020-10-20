@@ -1,4 +1,5 @@
 pub mod annotation_spec;
+pub mod class_name;
 pub mod code_block;
 pub mod code_writer;
 pub mod file_spec;
