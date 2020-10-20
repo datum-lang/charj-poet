@@ -6,6 +6,7 @@ pub mod file_spec;
 pub mod line_wrapper;
 pub mod member_name;
 pub mod method_spec;
+pub mod modifier;
 pub mod name_allocator;
 pub mod parameter_spec;
 pub mod parameterized_type_name;
