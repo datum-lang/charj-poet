@@ -9,7 +9,7 @@ repository = "https://github.com/phodal/charjpoet"
 documentation = "https://github.com/phodal/charjpoet"
 homepage = "https://github.com/phodal/charjpoet"
 description = """
-Charj is a API for write to `.cj` language.
+Charj Poet is a API for write to `.cj` language.
 """
 categories = ["text-processing", "command-line-interface", "development-tools", "parser-implementations", "parsing"]
 
