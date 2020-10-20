@@ -10,26 +10,28 @@
 /// - Members
 ///
 #[derive(Serialize, Debug)]
-pub struct FileSpec<'a> {
-    builder: &'a mut FileSpecBuilder
+pub struct FileSpec {
+    package_name: &'static str,
+    name: &'static str,
 }
 
-impl<'a> FileSpec<'a> {
-    pub fn new(builder: &'a mut FileSpecBuilder) -> Self {
+impl FileSpec {
+    pub fn new(builder: &mut FileSpecBuilder) -> Self {
         FileSpec {
-            builder
+            package_name: builder.package_name,
+            name: builder.name
         }
     }
 }
 
 #[derive(Serialize, Debug)]
 pub struct FileSpecBuilder {
-    package_name: String,
-    name: String,
+    package_name: &'static str,
+    name: &'static str,
 }
 
 impl FileSpecBuilder {
-    pub fn new(package_name: String, name: String) -> Self {
+    pub fn new(package_name: &'static str, name: &'static str) -> Self {
         FileSpecBuilder { package_name, name }
     }
 
@@ -51,6 +53,8 @@ mod tests {
 
     #[test]
     fn should_call_builder() {
-        FileSpecBuilder::new(String::from("com.phodal"), String::from("hello"));
+        let mut builder = FileSpecBuilder::new("com.phodal", "hello");
+        let spec = builder.build();
+        assert_eq!("com.phodal", spec.package_name);
     }
 }
