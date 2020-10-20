@@ -31,8 +31,8 @@ pub struct FileSpecBuilder {
 }
 
 impl FileSpecBuilder {
-    pub fn new(package_name: &'static str, name: &'static str) -> Self {
-        FileSpecBuilder { package_name, name }
+    pub fn new(package_name: &'static str, file_name: &'static str) -> Self {
+        FileSpecBuilder { package_name, name: file_name }
     }
 
     pub fn add_file_comment(&self, _format: String) {}
