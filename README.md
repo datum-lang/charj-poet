@@ -1,9 +1,8 @@
 # Charj Poet
 
-inspired by /Users/fdhuang/charj/scie/docs/adr/0014-code-generate-engine.md
+inspired by [JavaPoet](https://github.com/square/javapoet)
 
 CharjPoet is a Rust API for generating `.cj` source files.
-
 
 
 License
