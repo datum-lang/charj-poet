@@ -1,3 +1,4 @@
+use crate::poet::class_name::StructName;
 
 /**
  * Represents the name of a member (such as a function or a property).
@@ -9,5 +10,10 @@
  */
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MemberName {
-
+    pub package_name: String,
+    pub enclosing_class_name: Option<StructName>,
+    pub simple_name: String,
+    pub operator: Option<String>
 }
+
+impl MemberName {}
