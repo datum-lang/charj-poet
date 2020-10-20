@@ -9,20 +9,20 @@
 /// - Imports
 /// - Members
 ///
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct FileSpec {
-    builder: FileSpecBuilder
+#[derive(Serialize, Debug)]
+pub struct FileSpec<'a> {
+    builder: &'a mut FileSpecBuilder
 }
 
-impl FileSpec {
-    pub fn new(builder: FileSpecBuilder) -> Self {
+impl<'a> FileSpec<'a> {
+    pub fn new(builder: &'a mut FileSpecBuilder) -> Self {
         FileSpec {
             builder
         }
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Debug)]
 pub struct FileSpecBuilder {
     package_name: String,
     name: String,
@@ -39,8 +39,8 @@ impl FileSpecBuilder {
 
     pub fn add_type_alias(&self) {}
 
-    pub fn build(&self) -> FileSpec {
-        let file_spec = FileSpec::new(self.clone());
+    pub fn build(&mut self) -> FileSpec {
+        let file_spec = FileSpec::new(self);
         file_spec
     }
 }
