@@ -1,4 +1,4 @@
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BaseModifier {
     pub keyword: &'static str,
     // todo: check different behavior for hashset & vector
@@ -6,7 +6,7 @@ pub struct BaseModifier {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(Hash, Eq, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Hash, Eq, PartialEq, Debug, Clone)]
 pub enum Target {
     CLASS,
     VARIANCE_ANNOTATION,
@@ -35,7 +35,7 @@ impl Default for PublicModifier {
 
 
 #[allow(non_camel_case_types)]
-#[derive(Hash, Eq, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, Hash, Eq, PartialEq, Debug, Clone)]
 pub enum Modifier {
     PUBLIC,
     PROTECTED,
