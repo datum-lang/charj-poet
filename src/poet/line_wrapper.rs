@@ -10,7 +10,7 @@ pub const SPECIAL_CHARACTERS: [&'static str; 3] = [" ", "\n", "."];
 pub struct LineWrapper<'a> {
     pub out: &'a mut String,
     pub indent: String,
-    pub statement_line: i32,
+    pub column_limit: i32,
     pub segments: Vec<String>,
     pub indent_level: i32,
     pub line_prefix: String,
@@ -18,11 +18,11 @@ pub struct LineWrapper<'a> {
 }
 
 impl<'a> LineWrapper<'a> {
-    pub fn new(out: &'a mut String, indent: String, statement_line: i32) -> Self {
+    pub fn new(out: &'a mut String, indent: String, column_limit: i32) -> Self {
         LineWrapper {
             out,
             indent,
-            statement_line,
+            column_limit,
             segments: vec!["".to_string()],
             indent_level: -1,
             line_prefix: "".to_string(),
@@ -122,7 +122,15 @@ impl<'a> LineWrapper<'a> {
         self.indent_level = -1
     }
 
-    pub fn emit_current_line(&mut self) {}
+    pub fn emit_current_line(&mut self) {
+        let start = 0;
+        let column_length = self.segments[0].len();
+        for i in 1..column_length {
+            let segment = &self.segments[i];
+            let new_column_length = column_length + 1 + segment.len();
+            if newColumnCount > self.column_limit {}
+        }
+    }
 
     pub fn close(&mut self) {
         self.closed = true;
