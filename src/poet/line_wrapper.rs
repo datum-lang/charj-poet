@@ -32,7 +32,12 @@ impl LineWrapper {
         self.segments.len() != 1 || !self.segments[0].is_empty()
     }
 
-    pub fn append(&mut self, s: String, _indent_level: Option<i32>, _line_prefix: Option<String>) {
+    pub fn append(
+        &mut self,
+        input: String,
+        _indent_level: Option<i32>,
+        _line_prefix: Option<String>,
+    ) {
         let mut pos: usize = 0;
 
         let indent_level: i32;
@@ -47,7 +52,7 @@ impl LineWrapper {
             Some(prefix) => line_prefix = prefix,
         }
 
-        let chars: Vec<char> = s.chars().collect();
+        let chars: Vec<char> = input.chars().collect();
         while pos < chars.len() {
             let char = chars[pos];
             match char {
@@ -62,14 +67,36 @@ impl LineWrapper {
                     pos = pos + 1;
                 }
                 '.' => {
+                    // Render · as a non-breaking space.
+                    let len = self.segments.len();
+                    self.segments[len - 1].push(' ');
                     pos = pos + 1;
                 }
                 _ => {
-                    // s.indexo
+                    LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, pos);
+                    // input.find("");
                     pos = pos + 1;
                 }
             };
         }
+    }
+
+    pub fn index_of_any(
+        chars: &[char],
+        special_chars: [&'static str; 3],
+        start_index: usize,
+    ) -> i32 {
+        for index in start_index..chars.len() {
+            let char = chars[index];
+            println!("{:?}", char);
+            for schar in special_chars.iter() {
+                if char == schar.parse().unwrap() {
+                    return index as i32;
+                }
+            }
+        }
+
+        return -1;
     }
 
     pub fn new_line(&mut self) {
@@ -83,10 +110,17 @@ impl LineWrapper {
 
 #[cfg(test)]
 mod tests {
-    use crate::poet::line_wrapper::LineWrapper;
+    use crate::poet::line_wrapper::{LineWrapper, SPECIAL_CHARACTERS};
 
     #[test]
-    fn should_get_pending_segements() {
+    fn should_build_line_wrappers() {
+        let chars: Vec<char> = "hello ".chars().collect();
+        let index = LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 0);
+        assert_eq!(5, index);
+    }
+
+    #[test]
+    fn should_get_pending_segments() {
         let mut out = String::new();
         let mut wrapper = LineWrapper::new(out, String::from(""), 0);
         assert_eq!(false, wrapper.has_pending_segments());
