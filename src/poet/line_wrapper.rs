@@ -108,7 +108,10 @@ impl<'a> LineWrapper<'a> {
 
     pub fn new_line(&mut self) {
         self.emit_current_line();
-        write!(self.out, "\n");
+        match write!(self.out, "\n") {
+            Ok(_) => {}
+            Err(err) => println!("{:?}", err),
+        }
         self.indent_level = -1
     }
 
@@ -148,12 +151,14 @@ mod tests {
 
         assert_eq!("\n", out);
     }
-    //
-    // #[test]
-    // fn wrap() {
-    //     let mut out = String::new();
-    //     let mut wrapper = LineWrapper::new(out, String::from("  "), 10);
-    //     wrapper.append(String::from("abcde fghij"), Some(2), None);
-    //     wrapper.close();
-    // }
+
+    #[test]
+    fn wrap() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcde fghij"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("", out);
+    }
 }

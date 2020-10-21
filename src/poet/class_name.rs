@@ -9,8 +9,8 @@ impl StructName {}
 pub struct StructNameBuilder {}
 
 impl StructNameBuilder {
-    pub fn struct_builder(name: &'static str) {}
-    pub fn object_builder(name: &'static str) {}
-    pub fn interface_builder(name: &'static str) {}
-    pub fn enum_builder(name: &'static str) {}
+    pub fn struct_builder(_name: &'static str) {}
+    pub fn object_builder(_name: &'static str) {}
+    pub fn interface_builder(_name: &'static str) {}
+    pub fn enum_builder(_name: &'static str) {}
 }

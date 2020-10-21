@@ -38,7 +38,7 @@ use std::any::Any;
 pub struct CodeBlock {}
 
 impl CodeBlock {
-    pub fn new<T: 'static>(builder: &CodeBlockBuilder<T>) -> Self {
+    pub fn new<T: 'static>(_builder: &CodeBlockBuilder<T>) -> Self {
         CodeBlock {}
     }
 
@@ -71,7 +71,7 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// @param control_flow the control flow construct and its code, such as "if (foo == 5)".
     /// Shouldn't contain braces or newline characters.
     ///
-    pub fn next_control_flow(&mut self, control_flow: &'static str, args: T) {}
+    pub fn next_control_flow(&mut self, _control_flow: &'static str, _args: T) {}
 
     pub fn end_control_flow_none(&mut self) {}
 
@@ -79,11 +79,11 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// @param controlFlow the optional control flow construct and its code, such as
     ///     "while(foo == 20)". Only used for "do/while" control flows.
     ///
-    pub fn end_control_flow(&mut self, control_flow: &'static str, args: T) {}
+    pub fn end_control_flow(&mut self, _control_flow: &'static str, _args: T) {}
 
-    pub fn add_statement(&mut self, control_flow: &'static str, args: T) {}
+    pub fn add_statement(&mut self, _control_flow: &'static str, _args: T) {}
 
-    pub fn add(&mut self, format: &'static str, args: Option<T>) -> &mut CodeBlockBuilder<T> {
+    pub fn add(&mut self, _format: &'static str, _args: Option<T>) -> &mut CodeBlockBuilder<T> {
         self
     }
 
