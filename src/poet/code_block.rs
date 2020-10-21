@@ -38,8 +38,38 @@ use std::any::Any;
 pub struct CodeBlock {}
 
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Clone, Debug)]
 pub struct CodeBlockBuilder<T: Any> {
-    pub format_parts: Vec<String>,
+    pub format_parts: Vec<&'static str>,
     pub args: Vec<T>,
+}
+
+impl<T: Any> CodeBlockBuilder<T> {
+    ///
+    /// @param control_flow the control flow construct and its code, such as "if (foo == 5)".
+    /// Shouldn't contain braces or newline characters.
+    ///
+    pub fn next_control_flow(&mut self, control_flow: &'static str, args: T) {}
+
+    pub fn end_control_flow_none(&mut self) {}
+
+    ///
+    /// @param controlFlow the optional control flow construct and its code, such as
+    ///     "while(foo == 20)". Only used for "do/while" control flows.
+    ///
+    pub fn end_control_flow(&mut self, control_flow: &'static str, args: T) {}
+
+    pub fn add_statement(&mut self, control_flow: &'static str, args: T) {}
+
+    pub fn add(&mut self, format: &'static str, args: Option<T>) {}
+
+    pub fn unindent(&mut self) -> &mut CodeBlockBuilder<T> {
+        self.format_parts.push("$<");
+        self
+    }
+
+    pub fn indent(&mut self) -> &mut CodeBlockBuilder<T> {
+        self.format_parts.push("$>");
+        self
+    }
 }
