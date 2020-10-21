@@ -3,6 +3,7 @@ pub mod class_name;
 pub mod code_block;
 pub mod code_writer;
 pub mod file_spec;
+pub mod import;
 pub mod line_wrapper;
 pub mod member_name;
 pub mod method_spec;
