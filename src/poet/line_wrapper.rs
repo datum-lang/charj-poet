@@ -14,6 +14,7 @@ pub struct LineWrapper {
     pub segments: Vec<String>,
     pub indent_level: i32,
     pub line_prefix: String,
+    pub closed: bool,
 }
 
 impl LineWrapper {
@@ -25,6 +26,7 @@ impl LineWrapper {
             segments: vec!["".to_string()],
             indent_level: -1,
             line_prefix: "".to_string(),
+            closed: false,
         }
     }
 
@@ -73,9 +75,15 @@ impl LineWrapper {
                     pos = pos + 1;
                 }
                 _ => {
-                    LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, pos);
-                    // input.find("");
-                    pos = pos + 1;
+                    let mut next = LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, pos);
+                    if next == -1 {
+                        next = chars.len() as i32;
+                    }
+
+                    let len = self.segments.len();
+                    let i = next as usize - pos;
+                    self.segments[len - 1] = input.chars().skip(pos).take(i as usize).collect();
+                    pos = next as usize;
                 }
             };
         }
@@ -105,6 +113,10 @@ impl LineWrapper {
     }
 
     pub fn emit_current_line(&mut self) {}
+
+    pub fn close(&mut self) {
+        self.closed = true;
+    }
 }
 
 #[cfg(test)]
@@ -134,5 +146,13 @@ mod tests {
         wrapper.new_line();
 
         assert_eq!("\n", wrapper.out);
+    }
+
+    #[test]
+    fn wrap() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(out, String::from("  "), 10);
+        wrapper.append(String::from("abcde fghij"), Some(2), None);
+        wrapper.close();
     }
 }
