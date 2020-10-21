@@ -14,7 +14,7 @@ pub struct LineWrapper {
     pub segments: Vec<String>,
     pub indent_level: i32,
     pub line_prefix: String,
-    pub closed: bool,
+    closed: bool,
 }
 
 impl LineWrapper {
@@ -144,6 +144,7 @@ mod tests {
 
         wrapper.append("hello ".to_string(), None, None);
         wrapper.new_line();
+        wrapper.close();
 
         assert_eq!("\n", wrapper.out);
     }
