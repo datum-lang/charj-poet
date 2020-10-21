@@ -3,7 +3,8 @@ use std::collections::HashSet;
 #[derive(Clone, Debug)]
 pub struct BaseModifier {
     pub keyword: &'static str,
-    pub targets: HashSet<Target>,
+    // todo: check different behavior for hashset & vector
+    pub targets: Vec<Target>,
 }
 
 #[allow(non_camel_case_types)]
@@ -45,19 +46,16 @@ pub enum Modifier {
 }
 
 impl Modifier {
-    // pub const PUB_TARGET: HashSet<Target> = [Target::PROPERTY].iter().cloned().collect();
-    // pub const PUBLIC_VAL: BaseModifier  = BaseModifier {
-    //     keyword: "public",
-    //     targets: Modifier::PUB_TARGET,
-    // };
-
     fn value(&self) -> BaseModifier {
         match *self {
-            _ => {
+            Modifier::PUBLIC => {
                 BaseModifier {
-                    keyword: "",
-                    targets: Default::default()
+                    keyword: "public",
+                    targets: vec![Target::PROPERTY],
                 }
+            }
+            _ => {
+                BaseModifier { keyword: "", targets: Default::default() }
             }
         }
     }
