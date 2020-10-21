@@ -106,6 +106,13 @@ impl<'a> LineWrapper<'a> {
         return -1;
     }
 
+    pub fn append_non_wrapping(&mut self, str: String) {
+        let len = self.segments.len();
+        for char in str.chars() {
+            self.segments[len - 1].push(char);
+        }
+    }
+
     pub fn new_line(&mut self) {
         self.emit_current_line();
         match write!(self.out, "\n") {
@@ -120,6 +127,8 @@ impl<'a> LineWrapper<'a> {
     pub fn close(&mut self) {
         self.closed = true;
     }
+
+    pub fn check_closed() {}
 }
 
 #[cfg(test)]
