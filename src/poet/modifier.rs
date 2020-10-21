@@ -6,6 +6,7 @@ pub struct BaseModifier {
     pub targets: HashSet<Target>
 }
 
+#[allow(non_camel_case_types)]
 #[derive(Hash, Eq, PartialEq, Debug, Clone)]
 pub enum Target {
     CLASS,

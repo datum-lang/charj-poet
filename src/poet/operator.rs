@@ -4,6 +4,7 @@ pub struct BaseOperator {
     pub function_name: &'static str,
 }
 
+#[allow(non_camel_case_types)]
 #[derive(Hash, Eq, PartialEq, Debug, Clone)]
 pub enum Operator {
     UNARY_PLUS,
