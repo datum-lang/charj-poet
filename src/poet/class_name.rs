@@ -1,7 +1,7 @@
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct StructName {
-    pub package_name: &'static str,
-    pub simple_name: &'static str,
+    pub package_name: String,
+    pub simple_name: String,
 }
 
 impl StructName {

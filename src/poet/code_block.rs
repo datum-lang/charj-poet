@@ -64,7 +64,7 @@ impl<T: Any> CodeBlockBuilder<T> {
         }
     }
 
-    pub fn build(&self) {
+    pub fn build(&self) -> CodeBlock {
         return CodeBlock::new(self);
     }
 
