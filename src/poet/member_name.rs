@@ -8,7 +8,7 @@ use crate::poet::class_name::StructName;
  * companion object of the Map.Entry class
  * @param simpleName e.g. `isBlank`, `size`
  */
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Clone, Debug)]
 pub struct MemberName {
     pub package_name: String,
     pub enclosing_class_name: Option<StructName>,
