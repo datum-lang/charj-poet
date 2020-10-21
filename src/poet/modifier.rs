@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 #[derive(Clone, Debug)]
 pub struct BaseModifier {
     pub keyword: &'static str,
@@ -63,7 +61,6 @@ impl Modifier {
 
 #[cfg(test)]
 mod tests {
-    use crate::poet::operator::Operator;
     use crate::poet::modifier::Modifier;
 
     #[test]

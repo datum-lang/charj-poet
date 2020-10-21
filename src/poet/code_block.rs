@@ -1,3 +1,5 @@
+use std::any::Any;
+
 ///
 /// A fragment of a .kt file, potentially containing declarations, statements, and documentation.
 /// Code blocks are not necessarily well-formed Kotlin code, and are not validated. This class
@@ -32,8 +34,12 @@
 ///   double-indented.
 /// * `»` ends a statement.
 ///
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct CodeBlock {}
+
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CodeBlock {
-
+pub struct CodeBlockBuilder<T: Any> {
+    pub format_parts: Vec<String>,
+    pub args: Vec<T>,
 }

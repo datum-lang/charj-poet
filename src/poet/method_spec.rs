@@ -5,7 +5,7 @@ use crate::poet::annotation_spec::AnnotationSpec;
 use crate::poet::code_block::CodeBlock;
 
 /** A generated constructor or method declaration. */
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct MethodSpec {
     pub name: String,
     pub modifiers: Vec<Modifier>,
