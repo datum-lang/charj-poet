@@ -53,6 +53,4 @@
  * scope.
  */
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct NameAllocator {
-
-}
+pub struct NameAllocator {}

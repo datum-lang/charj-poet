@@ -13,7 +13,7 @@ pub struct MemberName {
     pub package_name: String,
     pub enclosing_class_name: Option<StructName>,
     pub simple_name: String,
-    pub operator: Option<String>
+    pub operator: Option<String>,
 }
 
 impl MemberName {}

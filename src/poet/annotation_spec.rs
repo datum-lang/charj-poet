@@ -1,5 +1,2 @@
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct AnnotationSpec {
-
-}
-
+pub struct AnnotationSpec {}

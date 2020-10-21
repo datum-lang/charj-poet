@@ -1,8 +1,8 @@
-use crate::poet::type_name::TypeName;
-use crate::poet::modifier::Modifier;
-use crate::poet::parameter_spec::ParameterSpec;
 use crate::poet::annotation_spec::AnnotationSpec;
 use crate::poet::code_block::CodeBlock;
+use crate::poet::modifier::Modifier;
+use crate::poet::parameter_spec::ParameterSpec;
+use crate::poet::type_name::TypeName;
 
 /** A generated constructor or method declaration. */
 #[derive(Serialize, Deserialize, Clone, Debug)]

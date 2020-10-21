@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-use crate::poet::import::Import;
 use crate::poet::class_name::StructName;
+use crate::poet::import::Import;
 use crate::poet::member_name::MemberName;
+use std::collections::HashMap;
 
 pub const DEFAULT_INDENT: &'static str = "  ";
 ///
@@ -17,7 +17,7 @@ pub struct CodeWriter {
     pub import_members: HashMap<String, MemberName>,
     pub column_limit: i32,
     pub indent_level: i32,
-    pub statement_line: i32
+    pub statement_line: i32,
 }
 
 impl CodeWriter {
@@ -30,7 +30,7 @@ impl CodeWriter {
             import_members: Default::default(),
             column_limit: 100,
             indent_level: 0,
-            statement_line: -1
+            statement_line: -1,
         }
     }
 }

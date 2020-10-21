@@ -1,5 +1,5 @@
-use std::collections::HashSet;
 use crate::poet::modifier::Modifier;
+use std::collections::HashSet;
 
 /** A generated class, interface, or enum declaration. */
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -13,15 +13,15 @@ pub struct BaseKind {
 }
 
 pub struct ClassKind {
-    pub kind: BaseKind
+    pub kind: BaseKind,
 }
 
 pub struct ObjectKind {
-    pub kind: BaseKind
+    pub kind: BaseKind,
 }
 
 pub struct InterfaceKind {
-    pub kind: BaseKind
+    pub kind: BaseKind,
 }
 
 pub enum Kind {

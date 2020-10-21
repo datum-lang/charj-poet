@@ -19,7 +19,7 @@ pub enum Target {
 
 #[derive(Clone, Debug)]
 pub struct PublicModifier {
-    pub modifier: BaseModifier
+    pub modifier: BaseModifier,
 }
 
 impl Default for PublicModifier {
@@ -28,11 +28,10 @@ impl Default for PublicModifier {
             modifier: BaseModifier {
                 keyword: "public",
                 targets: [Target::PROPERTY].iter().cloned().collect(),
-            }
+            },
         }
     }
 }
-
 
 #[allow(non_camel_case_types)]
 #[derive(Serialize, Deserialize, Hash, Eq, PartialEq, Debug, Clone)]
@@ -46,15 +45,14 @@ pub enum Modifier {
 impl Modifier {
     fn value(&self) -> BaseModifier {
         match *self {
-            Modifier::PUBLIC => {
-                BaseModifier {
-                    keyword: "public",
-                    targets: vec![Target::PROPERTY],
-                }
-            }
-            _ => {
-                BaseModifier { keyword: "", targets: Default::default() }
-            }
+            Modifier::PUBLIC => BaseModifier {
+                keyword: "public",
+                targets: vec![Target::PROPERTY],
+            },
+            _ => BaseModifier {
+                keyword: "",
+                targets: Default::default(),
+            },
         }
     }
 }

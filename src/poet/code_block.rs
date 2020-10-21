@@ -49,7 +49,6 @@ impl CodeBlock {
     }
 }
 
-
 #[derive(Serialize, Clone, Debug)]
 pub struct CodeBlockBuilder<T: Any> {
     pub format_parts: Vec<&'static str>,
@@ -98,7 +97,6 @@ impl<T: Any> CodeBlockBuilder<T> {
         self
     }
 }
-
 
 #[cfg(test)]
 mod tests {

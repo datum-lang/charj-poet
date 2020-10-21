@@ -19,7 +19,7 @@ impl FileSpec {
     pub fn new(builder: &mut FileSpecBuilder) -> Self {
         FileSpec {
             package_name: builder.package_name,
-            name: builder.name
+            name: builder.name,
         }
     }
 }
@@ -32,7 +32,10 @@ pub struct FileSpecBuilder {
 
 impl FileSpecBuilder {
     pub fn new(package_name: &'static str, file_name: &'static str) -> Self {
-        FileSpecBuilder { package_name, name: file_name }
+        FileSpecBuilder {
+            package_name,
+            name: file_name,
+        }
     }
 
     pub fn add_file_comment(&self, _format: String) {}

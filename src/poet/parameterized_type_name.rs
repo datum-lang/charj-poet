@@ -1,4 +1,2 @@
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct ParameterizedTypeName {
-
-}
+pub struct ParameterizedTypeName {}

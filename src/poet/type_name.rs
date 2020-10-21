@@ -26,6 +26,4 @@
  * ParameterizedTypeName}, {@link TypeVariableName}, and {@link WildcardTypeName}.
  */
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct TypeName {
-
-}
+pub struct TypeName {}
