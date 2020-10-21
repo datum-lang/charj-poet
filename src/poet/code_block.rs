@@ -35,11 +35,13 @@ use std::any::Any;
 /// * `»` ends a statement.
 ///
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CodeBlock {
-
-}
+pub struct CodeBlock {}
 
 impl CodeBlock {
+    pub fn new<T: 'static>(builder: &CodeBlockBuilder<T>) -> Self {
+        CodeBlock {}
+    }
+
     pub fn of(format: &'static str, args: &'static str) {
         let mut builder: CodeBlockBuilder<&'static str> = CodeBlockBuilder::new();
         builder.add(format, Some(args));
@@ -58,12 +60,12 @@ impl<T: Any> CodeBlockBuilder<T> {
     pub fn new() -> Self {
         CodeBlockBuilder {
             format_parts: vec![],
-            args: vec![]
+            args: vec![],
         }
     }
 
     pub fn build(&self) {
-
+        return CodeBlock::new(self);
     }
 
     ///
