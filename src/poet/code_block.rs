@@ -35,7 +35,17 @@ use std::any::Any;
 /// * `»` ends a statement.
 ///
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CodeBlock {}
+pub struct CodeBlock {
+
+}
+
+impl CodeBlock {
+    pub fn of(format: &'static str, args: &'static str) {
+        let mut builder: CodeBlockBuilder<&'static str> = CodeBlockBuilder::new();
+        builder.add(format, Some(args));
+        builder.build();
+    }
+}
 
 
 #[derive(Serialize, Clone, Debug)]
@@ -45,6 +55,17 @@ pub struct CodeBlockBuilder<T: Any> {
 }
 
 impl<T: Any> CodeBlockBuilder<T> {
+    pub fn new() -> Self {
+        CodeBlockBuilder {
+            format_parts: vec![],
+            args: vec![]
+        }
+    }
+
+    pub fn build(&self) {
+
+    }
+
     ///
     /// @param control_flow the control flow construct and its code, such as "if (foo == 5)".
     /// Shouldn't contain braces or newline characters.
@@ -61,7 +82,9 @@ impl<T: Any> CodeBlockBuilder<T> {
 
     pub fn add_statement(&mut self, control_flow: &'static str, args: T) {}
 
-    pub fn add(&mut self, format: &'static str, args: Option<T>) {}
+    pub fn add(&mut self, format: &'static str, args: Option<T>) -> &mut CodeBlockBuilder<T> {
+        self
+    }
 
     pub fn unindent(&mut self) -> &mut CodeBlockBuilder<T> {
         self.format_parts.push("$<");
@@ -71,5 +94,16 @@ impl<T: Any> CodeBlockBuilder<T> {
     pub fn indent(&mut self) -> &mut CodeBlockBuilder<T> {
         self.format_parts.push("$>");
         self
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use crate::poet::code_block::CodeBlock;
+
+    #[test]
+    fn of() {
+        CodeBlock::of("$L taco", "delicious");
     }
 }
