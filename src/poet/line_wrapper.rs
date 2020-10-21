@@ -88,7 +88,6 @@ impl LineWrapper {
     ) -> i32 {
         for index in start_index..chars.len() {
             let char = chars[index];
-            println!("{:?}", char);
             for schar in special_chars.iter() {
                 if char == schar.parse().unwrap() {
                     return index as i32;
@@ -115,8 +114,14 @@ mod tests {
     #[test]
     fn should_build_line_wrappers() {
         let chars: Vec<char> = "hello ".chars().collect();
-        let index = LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 0);
-        assert_eq!(5, index);
+        assert_eq!(5, LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 0));
+        assert_eq!(5, LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 5));
+
+        let empty: Vec<char> = "hello".chars().collect();
+        assert_eq!(
+            -1,
+            LineWrapper::index_of_any(&*empty, SPECIAL_CHARACTERS, 0)
+        );
     }
 
     #[test]
