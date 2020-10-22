@@ -1,7 +1,7 @@
 use regex::Regex;
 use std::fmt::Write;
 
-pub const SPECIAL_CHARACTERS: [char; 3] = [' ', '\n', '.'];
+pub const SPECIAL_CHARACTERS: [char; 3] = [' ', '\n', '·'];
 lazy_static! {
     static ref UNSAFE_LINE_START: Regex = Regex::new(r"\\s*[-+].*").unwrap();
     // static ref SPECIAL_CHARACTERS: Regex = Regex::new(r"\\s*[-+].*").unwrap();
@@ -73,8 +73,7 @@ impl<'a> LineWrapper<'a> {
                     self.new_line();
                     pos = pos + 1;
                 }
-                '.' => {
-                    // Render · as a non-breaking space.
+                '·' => {
                     let len = self.segments.len();
                     self.segments[len - 1].push(' ');
                     pos = pos + 1;
@@ -270,5 +269,107 @@ mod tests {
         wrapper.close();
 
         assert_eq!("abcdefghij\n    klmnop", out);
+    }
+
+    #[test]
+    fn overly_long_lines_without_leading_space() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcdefghijkl"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("abcdefghijkl", out);
+    }
+
+    #[test]
+    fn overly_long_lines_with_leading_space() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from(" abcdefghijkl"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("\n    abcdefghijkl", out);
+    }
+
+    #[test]
+    fn no_wrap_embedded_newlines() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcde fghi\njklmn"), Some(2), None);
+        wrapper.append(String::from("opqrstuvwxy"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("abcde fghi\njklmnopqrstuvwxy", out);
+    }
+
+    #[test]
+    fn wrap_embedded_newlines() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcde fghij\nklmn"), Some(2), None);
+        wrapper.append(String::from("opqrstuvwxy"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("abcde\n    fghij\nklmnopqrstuvwxy", out);
+    }
+
+    #[test]
+    fn no_wrap_multiple_newlines() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(
+            String::from("abcde fghi\nklmnopq\nr stuvwxyz"),
+            Some(2),
+            None,
+        );
+        wrapper.close();
+
+        assert_eq!("abcde fghi\nklmnopq\nr stuvwxyz", out);
+    }
+
+    #[test]
+    fn wrap_multiple_newlines() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(
+            String::from("abcde fghi\nklmnopq\nrs tuvwxyz1"),
+            Some(2),
+            None,
+        );
+        wrapper.close();
+
+        assert_eq!("abcde fghi\nklmnopq\nrs\n    tuvwxyz1", out);
+    }
+
+    #[test]
+    fn no_wrap_preceding_unary_plus() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("a - b       - c"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("a - b     \n     - c", out);
+    }
+
+    #[test]
+    fn append_non_wrapping() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("ab cd ef"), Some(2), None);
+        wrapper.append_non_wrapping(String::from("gh ij kl mn"));
+        wrapper.close();
+
+        assert_eq!("ab cd\n    efgh ij kl mn", out);
+    }
+
+    #[test]
+    fn append_non_wrapping_space() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("ab cd ef"), Some(2), None);
+        wrapper.append(String::from("gh·ij·kl·mn"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("ab cd\n    efgh ij kl mn", out);
     }
 }
