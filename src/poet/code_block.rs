@@ -128,7 +128,7 @@ impl CodeBlockBuilder {
                 relative_parameter_count = relative_parameter_count + 1;
             }
 
-            // self.add_argument(format, c, args[index as usize]);
+            self.add_argument(format, c, args[index as usize].clone());
         }
         self
     }
@@ -136,10 +136,9 @@ impl CodeBlockBuilder {
     pub fn add_argument(&mut self, format: &str, c: char, arg: String) {
         match c {
             'L' => {
-                self.arg_to_literal(arg);
-                // self.args.push(arg)
+                self.args.push(self.arg_to_literal(arg));
             }
-            _ => {}
+            _ => println!("invalid format string: {:?}", format),
         }
     }
 

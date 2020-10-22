@@ -1,3 +1,6 @@
+// todo: remove dead code, it's temp solution for better debug
+#![allow(dead_code)]
+
 #[macro_use]
 extern crate serde_derive;
 
