@@ -151,6 +151,7 @@ impl<'a> LineWrapper<'a> {
 
         let mut start = 0;
         let mut column_count = self.segments[0].len();
+
         for i in 1..self.segments.len() {
             let segment = &self.segments[i];
             let new_column_count = column_count + 1 + segment.len();
@@ -167,7 +168,7 @@ impl<'a> LineWrapper<'a> {
         self.emit_segment_range(start, self.segments.len() as i32);
 
         self.segments.clear();
-        self.segments.push(" ".to_string());
+        self.segments.push("".to_string());
     }
 
     #[allow(unused_must_use)]
