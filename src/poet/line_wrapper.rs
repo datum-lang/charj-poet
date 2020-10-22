@@ -154,11 +154,13 @@ impl<'a> LineWrapper<'a> {
 
         for i in 1..self.segments.len() {
             let segment = &self.segments[i];
+            let current_length = segment.len();
+
             let new_column_count = column_count + 1 + segment.len();
             if new_column_count > self.column_limit as usize {
                 self.emit_segment_range(start, i as i32);
                 start = i as i32;
-                column_count = self.segments.len() + self.indent.len() * self.indent_level as usize;
+                column_count = current_length + self.indent.len() * self.indent_level as usize;
                 continue;
             }
 
@@ -253,6 +255,6 @@ mod tests {
         wrapper.append(String::from("ab cd ef gh ij kl mn op qr"), Some(1), None);
         wrapper.close();
 
-        assert_eq!("ab cd ef\n  gh\n  ij\n  kl\n  mn\n  op\n  qr", out);
+        assert_eq!("ab cd ef\n  gh ij kl\n  mn op qr", out);
     }
 }
