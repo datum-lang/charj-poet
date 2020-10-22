@@ -1,6 +1,4 @@
-use crate::poet::{index_of, index_of_any};
-use std::any::Any;
-use std::ops::Index;
+use crate::poet::index_of;
 
 ///
 /// A fragment of a .kt file, potentially containing declarations, statements, and documentation.
@@ -40,24 +38,24 @@ use std::ops::Index;
 pub struct CodeBlock {}
 
 impl CodeBlock {
-    pub fn new<T: 'static>(_builder: &CodeBlockBuilder<T>) -> Self {
+    pub fn new(_builder: &CodeBlockBuilder) -> Self {
         CodeBlock {}
     }
 
     pub fn of(format: &str, args: Vec<String>) -> CodeBlock {
-        let mut builder: CodeBlockBuilder<String> = CodeBlockBuilder::new();
+        let mut builder: CodeBlockBuilder = CodeBlockBuilder::new();
         builder.add(format, args);
         builder.build()
     }
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct CodeBlockBuilder<T: Any> {
+pub struct CodeBlockBuilder {
     pub format_parts: Vec<String>,
-    pub args: Vec<T>,
+    pub args: Vec<String>,
 }
 
-impl<T: Any> CodeBlockBuilder<T> {
+impl CodeBlockBuilder {
     pub fn new() -> Self {
         CodeBlockBuilder {
             format_parts: vec![],
@@ -73,7 +71,7 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// @param control_flow the control flow construct and its code, such as "if (foo == 5)".
     /// Shouldn't contain braces or newline characters.
     ///
-    pub fn next_control_flow(&mut self, _control_flow: &'static str, _args: T) {}
+    pub fn next_control_flow(&mut self, _control_flow: &'static str, _args: String) {}
 
     pub fn end_control_flow_none(&mut self) {}
 
@@ -81,9 +79,9 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// @param controlFlow the optional control flow construct and its code, such as
     ///     "while(foo == 20)". Only used for "do/while" control flows.
     ///
-    pub fn end_control_flow(&mut self, _control_flow: &'static str, _args: T) {}
+    pub fn end_control_flow(&mut self, _control_flow: &'static str, _args: String) {}
 
-    pub fn add_statement(&mut self, _control_flow: &'static str, _args: T) {}
+    pub fn add_statement(&mut self, _control_flow: &'static str, _args: String) {}
 
     ///
     /// Add code with positional or relative arguments.
@@ -96,7 +94,7 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// Mixing relative and positional arguments in a call to add is invalid and will result in an
     /// error.
     ///
-    pub fn add(&mut self, format: &str, args: Vec<T>) -> &mut CodeBlockBuilder<T> {
+    pub fn add(&mut self, format: &str, args: Vec<String>) -> &mut CodeBlockBuilder {
         let mut has_relative: bool = false;
         let mut has_indexed: bool = false;
         let mut relative_parameter_count: i32 = 0;
@@ -135,7 +133,7 @@ impl<T: Any> CodeBlockBuilder<T> {
         self
     }
 
-    pub fn add_argument(&mut self, format: &str, c: char, arg: T) {
+    pub fn add_argument(&mut self, format: &str, c: char, arg: String) {
         match c {
             'L' => {
                 self.arg_to_literal(arg);
@@ -145,16 +143,16 @@ impl<T: Any> CodeBlockBuilder<T> {
         }
     }
 
-    pub fn arg_to_literal(&self, arg: T) -> T {
+    pub fn arg_to_literal(&self, arg: String) -> String {
         return arg;
     }
 
-    pub fn unindent(&mut self) -> &mut CodeBlockBuilder<T> {
+    pub fn unindent(&mut self) -> &mut CodeBlockBuilder {
         self.format_parts.push(String::from("$<"));
         self
     }
 
-    pub fn indent<'a>(&mut self) -> &mut CodeBlockBuilder<T> {
+    pub fn indent<'a>(&mut self) -> &mut CodeBlockBuilder {
         self.format_parts.push(String::from("$>"));
         self
     }
