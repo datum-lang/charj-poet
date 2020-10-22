@@ -124,16 +124,20 @@ impl<'a> LineWrapper<'a> {
         self.indent_level = -1
     }
 
+    /**
+     * Any segment that starts with '+' or '-' can't have a break preceding it. Combine it with the
+     * preceding segment. Note that this doesn't apply to the first segment.
+     */
     fn fold_unsafe_breaks(&mut self) {
         let mut i = 1;
         while i < self.segments.len() {
             let segment = &self.segments[i];
             if UNSAFE_LINE_START.is_match(segment) {
-                // self.segments[i - 1] = self.segments[i - 1].clone() + " " + self.segments[i].clone();
                 // segments.removeAt(i)
                 write!(self.segments[i - 1], " ");
                 let next = self.segments[i].clone();
                 write!(self.segments[i - 1], "{}", next);
+                self.segments.remove(i);
                 if i > 1 {
                     i = i - 1;
                 }
