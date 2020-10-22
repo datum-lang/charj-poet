@@ -1,10 +1,12 @@
 use crate::poet::class_name::StructName;
+use crate::poet::code_block::CodeBlock;
 use crate::poet::import::Import;
 use crate::poet::line_wrapper::LineWrapper;
 use crate::poet::member_name::MemberName;
 use std::collections::HashMap;
 
 pub const DEFAULT_INDENT: &'static str = "  ";
+pub const NO_PACKAGE: &'static str = "";
 ///
 /// Converts a [FileSpec] to a string suitable to both human- and kotlinc-consumption. This honors
 /// imports, indentation, and deferred variable names.
@@ -12,7 +14,8 @@ pub const DEFAULT_INDENT: &'static str = "  ";
 #[derive(Serialize, Debug)]
 pub struct CodeWriter<'a> {
     pub out: Box<LineWrapper<'a>>,
-    pub ident: &'static str,
+    pub indent: &'static str,
+    pub package_name: String,
     pub imports: HashMap<String, Import>,
     pub import_types: HashMap<String, StructName>,
     pub import_members: HashMap<String, MemberName>,
@@ -27,7 +30,8 @@ impl<'a> CodeWriter<'a> {
         let wrapper = Box::new(line_wrapper);
         CodeWriter {
             out: wrapper,
-            ident,
+            indent: ident,
+            package_name: String::from(NO_PACKAGE),
             imports: Default::default(),
             import_types: Default::default(),
             import_members: Default::default(),
@@ -35,6 +39,21 @@ impl<'a> CodeWriter<'a> {
             indent_level: 0,
             statement_line: -1,
         }
+    }
+
+    pub fn emit_code(&mut self, format: &str, args: Option<&str>) {
+        // self._emit_code(format);
+    }
+
+    pub fn emit(&mut self, s: &str) {}
+
+    fn _emit_code(code_block: &mut CodeBlock, format: &str) {}
+    pub fn push_package(&mut self, package_name: &str) {
+        self.package_name = String::from(package_name);
+    }
+
+    pub fn close(&mut self) {
+        self.out.close();
     }
 }
 
