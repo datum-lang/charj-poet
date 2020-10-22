@@ -4,7 +4,6 @@ use std::fmt::Write;
 pub const SPECIAL_CHARACTERS: [char; 3] = [' ', '\n', '·'];
 lazy_static! {
     static ref UNSAFE_LINE_START: Regex = Regex::new(r"\\s*[-+].*").unwrap();
-    // static ref SPECIAL_CHARACTERS: Regex = Regex::new(r"\\s*[-+].*").unwrap();
 }
 
 ///
@@ -202,34 +201,6 @@ impl<'a> LineWrapper<'a> {
 #[cfg(test)]
 mod tests {
     use crate::poet::line_wrapper::LineWrapper;
-
-    // TODO: after log for articles
-    // #[test]
-    // fn should_build_line_wrappers() {
-    //     let chars: Vec<char> = "hello ".chars().collect();
-    //     assert_eq!(5, LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 0));
-    //     assert_eq!(5, LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, 5));
-    //
-    //     let empty: Vec<char> = "hello".chars().collect();
-    //     assert_eq!(
-    //         -1,
-    //         LineWrapper::index_of_any(&*empty, SPECIAL_CHARACTERS, 0)
-    //     );
-    // }
-    //
-    // #[test]
-    // fn should_get_pending_segments() {
-    //     let mut out = String::new();
-    //     let mut wrapper = LineWrapper::new(&mut out, String::from(""), 0);
-    //     assert_eq!(false, wrapper.has_pending_segments());
-    //
-    //     wrapper.append("hello ".to_string(), None, None);
-    //     wrapper.new_line();
-    //     wrapper.close();
-    //
-    //     assert_eq!("hello\n\n", out);
-    // }
-
     #[test]
     fn wrap() {
         let mut out = String::new();
