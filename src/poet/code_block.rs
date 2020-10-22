@@ -1,4 +1,7 @@
-use crate::poet::index_of;
+use crate::poet::code_writer::CodeWriter;
+use crate::poet::{index_of, DEFAULT_INDENT};
+use core::fmt;
+use serde::export::Formatter;
 
 ///
 /// A fragment of a .kt file, potentially containing declarations, statements, and documentation.
@@ -46,6 +49,14 @@ impl CodeBlock {
         let mut builder: CodeBlockBuilder = CodeBlockBuilder::new();
         builder.add(format, args);
         builder.build()
+    }
+}
+
+impl fmt::Display for CodeBlock {
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
+        let mut out = "".to_string();
+        CodeWriter::new(&mut out, DEFAULT_INDENT);
+        Ok(())
     }
 }
 
@@ -129,8 +140,16 @@ impl CodeBlockBuilder {
             }
 
             self.add_argument(format, c, args[index as usize].clone());
+            self.format_parts
+                .push(CodeBlockBuilder::merge_str_c("$", c));
         }
         self
+    }
+
+    fn merge_str_c(s: &str, c: char) -> String {
+        let mut string = String::from(s);
+        string.push_str(&*c.to_string());
+        string
     }
 
     pub fn add_argument(&mut self, format: &str, c: char, arg: String) {
@@ -163,6 +182,7 @@ mod tests {
 
     #[test]
     fn of() {
-        CodeBlock::of("$L taco", vec![String::from("delicious")]);
+        let code_block = CodeBlock::of("$L taco", vec![String::from("delicious")]);
+        // println!()
     }
 }

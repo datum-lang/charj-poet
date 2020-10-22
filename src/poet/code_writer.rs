@@ -5,7 +5,6 @@ use crate::poet::line_wrapper::LineWrapper;
 use crate::poet::member_name::MemberName;
 use std::collections::HashMap;
 
-pub const DEFAULT_INDENT: &'static str = "  ";
 pub const NO_PACKAGE: &'static str = "";
 ///
 /// Converts a [FileSpec] to a string suitable to both human- and kotlinc-consumption. This honors
@@ -59,7 +58,8 @@ impl<'a> CodeWriter<'a> {
 
 #[cfg(test)]
 mod tests {
-    use crate::poet::code_writer::{CodeWriter, DEFAULT_INDENT};
+    use crate::poet::code_writer::CodeWriter;
+    use crate::poet::DEFAULT_INDENT;
 
     #[test]
     fn init() {
