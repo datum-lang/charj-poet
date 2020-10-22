@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::ops::Index;
 
 ///
 /// A fragment of a .kt file, potentially containing declarations, statements, and documentation.
@@ -42,10 +43,10 @@ impl CodeBlock {
         CodeBlock {}
     }
 
-    pub fn of(format: &'static str, args: &'static str) {
-        let mut builder: CodeBlockBuilder<&'static str> = CodeBlockBuilder::new();
-        builder.add(format, Some(args));
-        builder.build();
+    pub fn of(format: &str, args: String) -> CodeBlock {
+        let mut builder: CodeBlockBuilder<String> = CodeBlockBuilder::new();
+        builder.add(format, args);
+        builder.build()
     }
 }
 
@@ -83,7 +84,30 @@ impl<T: Any> CodeBlockBuilder<T> {
 
     pub fn add_statement(&mut self, _control_flow: &'static str, _args: T) {}
 
-    pub fn add(&mut self, _format: &'static str, _args: Option<T>) -> &mut CodeBlockBuilder<T> {
+    ///
+    /// Add code with positional or relative arguments.
+    ///
+    /// Relative arguments map 1:1 with the placeholders in the format string.
+    ///
+    /// Positional arguments use an index after the placeholder to identify which argument index
+    /// to use. For example, for a literal to reference the 3rd argument: "%3L" (1 based index)
+    ///
+    /// Mixing relative and positional arguments in a call to add is invalid and will result in an
+    /// error.
+    ///
+    pub fn add(&mut self, format: &str, args: T) -> &mut CodeBlockBuilder<T> {
+        let mut has_relative: bool = false;
+        let mut has_indexed: bool = false;
+        let mut relative_parameter_count: i32 = 0;
+
+        // let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args);
+
+        let chars = format.chars();
+        for p in 0..format.len() {
+            // if chars[p] != '$' {
+            //     format.index()
+            // }
+        }
         self
     }
 
@@ -104,6 +128,6 @@ mod tests {
 
     #[test]
     fn of() {
-        CodeBlock::of("$L taco", "delicious");
+        CodeBlock::of("$L taco", String::from("delicious"));
     }
 }

@@ -41,11 +41,12 @@ impl<'a> CodeWriter<'a> {
         }
     }
 
-    pub fn emit_code(&mut self, format: &str, args: Option<&str>) {
+    pub fn emit_code(&mut self, format: &str, args: String) {
         // self._emit_code(format);
+        CodeBlock::of(format, args);
     }
 
-    pub fn emit(&mut self, s: &str) {}
+    pub fn emit(&mut self, s: String) {}
 
     fn _emit_code(code_block: &mut CodeBlock, format: &str) {}
     pub fn push_package(&mut self, package_name: &str) {

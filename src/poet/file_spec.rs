@@ -42,8 +42,8 @@ impl FileSpec {
 
     pub fn emit(&self, writer: &mut CodeWriter) {
         writer.push_package(self.package_name);
-        writer.emit_code("package·%L\n", Some(self.package_name));
-        writer.emit("\n");
+        writer.emit_code("package·%L\n", self.package_name.to_string());
+        // writer.emit("\n");
     }
 }
 
