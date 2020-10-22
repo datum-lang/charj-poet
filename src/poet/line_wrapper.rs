@@ -1,6 +1,11 @@
+use regex::Regex;
 use std::fmt::Write;
 
-pub const SPECIAL_CHARACTERS: [&'static str; 3] = [" ", "\n", "."];
+pub const SPECIAL_CHARACTERS: [char; 3] = [' ', '\n', '.'];
+lazy_static! {
+    static ref UNSAFE_LINE_START: Regex = Regex::new(r"\\s*[-+].*").unwrap();
+    // static ref SPECIAL_CHARACTERS: Regex = Regex::new(r"\\s*[-+].*").unwrap();
+}
 
 ///
 /// Implements soft line wrapping on an appendable. To use, append characters using {@link #append}
@@ -89,15 +94,11 @@ impl<'a> LineWrapper<'a> {
         }
     }
 
-    pub fn index_of_any(
-        chars: &[char],
-        special_chars: [&'static str; 3],
-        start_index: usize,
-    ) -> i32 {
+    pub fn index_of_any(chars: &[char], special_chars: [char; 3], start_index: usize) -> i32 {
         for index in start_index..chars.len() {
-            let char = chars[index];
+            let ch: char = chars[index];
             for schar in special_chars.iter() {
-                if char == schar.parse().unwrap() {
+                if *schar == ch {
                     return index as i32;
                 }
             }
@@ -123,7 +124,24 @@ impl<'a> LineWrapper<'a> {
         self.indent_level = -1
     }
 
-    fn fold_unsafe_breaks(&mut self) {}
+    fn fold_unsafe_breaks(&mut self) {
+        let mut i = 1;
+        while i < self.segments.len() {
+            let segment = &self.segments[i];
+            if UNSAFE_LINE_START.is_match(segment) {
+                // self.segments[i - 1] = self.segments[i - 1].clone() + " " + self.segments[i].clone();
+                // segments.removeAt(i)
+                write!(self.segments[i - 1], " ");
+                let next = self.segments[i].clone();
+                write!(self.segments[i - 1], "{}", next);
+                if i > 1 {
+                    i = i - 1;
+                }
+            } else {
+                i = i + 1;
+            }
+        }
+    }
     fn emit_current_line(&mut self) {
         self.fold_unsafe_breaks();
 
@@ -230,6 +248,6 @@ mod tests {
         wrapper.append(String::from("ab cd ef gh ij kl mn op qr"), Some(1), None);
         wrapper.close();
 
-        assert_eq!("abcde fghi", out);
+        assert_eq!("ab cd ef\n  gh\n  ij\n  kl\n  mn\n  op\n  qr", out);
     }
 }
