@@ -19,3 +19,6 @@ categories = ["text-processing", "command-line-interface", "development-tools", 
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0.115"
 serde_json = "1.0"
+
+lazy_static = "1.4.0"
+regex = "1"
