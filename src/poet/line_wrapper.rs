@@ -122,10 +122,13 @@ impl<'a> LineWrapper<'a> {
         self.indent_level = -1
     }
 
+    fn fold_unsafe_breaks(&mut self) {}
     fn emit_current_line(&mut self) {
+        self.fold_unsafe_breaks();
+
         let mut start = 0;
         let mut column_count = self.segments[0].len();
-        for i in 1..column_count {
+        for i in 1..self.segments.len() {
             let segment = &self.segments[i];
             let new_column_count = column_count + 1 + segment.len();
             if new_column_count > self.column_limit as usize {
@@ -162,6 +165,7 @@ impl<'a> LineWrapper<'a> {
     }
 
     pub fn close(&mut self) {
+        self.emit_current_line();
         self.closed = true;
     }
 
@@ -205,6 +209,6 @@ mod tests {
         wrapper.append(String::from("abcde fghij"), Some(2), None);
         wrapper.close();
 
-        assert_eq!("", out);
+        assert_eq!("abcde\n    fghij", out);
     }
 }
