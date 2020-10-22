@@ -43,7 +43,7 @@ impl CodeBlock {
         CodeBlock {}
     }
 
-    pub fn of(format: &str, args: String) -> CodeBlock {
+    pub fn of(format: &str, args: Vec<String>) -> CodeBlock {
         let mut builder: CodeBlockBuilder<String> = CodeBlockBuilder::new();
         builder.add(format, args);
         builder.build()
@@ -52,7 +52,7 @@ impl CodeBlock {
 
 #[derive(Serialize, Clone, Debug)]
 pub struct CodeBlockBuilder<T: Any> {
-    pub format_parts: Vec<&'static str>,
+    pub format_parts: Vec<String>,
     pub args: Vec<T>,
 }
 
@@ -95,12 +95,12 @@ impl<T: Any> CodeBlockBuilder<T> {
     /// Mixing relative and positional arguments in a call to add is invalid and will result in an
     /// error.
     ///
-    pub fn add(&mut self, format: &str, args: T) -> &mut CodeBlockBuilder<T> {
+    pub fn add(&mut self, format: &str, args: Vec<T>) -> &mut CodeBlockBuilder<T> {
         let mut has_relative: bool = false;
         let mut has_indexed: bool = false;
         let mut relative_parameter_count: i32 = 0;
 
-        // let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args);
+        let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args.len());
 
         let chars = format.chars();
         for p in 0..format.len() {
@@ -112,12 +112,12 @@ impl<T: Any> CodeBlockBuilder<T> {
     }
 
     pub fn unindent(&mut self) -> &mut CodeBlockBuilder<T> {
-        self.format_parts.push("$<");
+        self.format_parts.push(String::from("$<"));
         self
     }
 
-    pub fn indent(&mut self) -> &mut CodeBlockBuilder<T> {
-        self.format_parts.push("$>");
+    pub fn indent<'a>(&mut self) -> &mut CodeBlockBuilder<T> {
+        self.format_parts.push(String::from("$>"));
         self
     }
 }
@@ -128,6 +128,6 @@ mod tests {
 
     #[test]
     fn of() {
-        CodeBlock::of("$L taco", String::from("delicious"));
+        CodeBlock::of("$L taco", vec![String::from("delicious")]);
     }
 }

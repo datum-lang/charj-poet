@@ -42,7 +42,7 @@ impl FileSpec {
 
     pub fn emit(&self, writer: &mut CodeWriter) {
         writer.push_package(self.package_name);
-        writer.emit_code("package·%L\n", self.package_name.to_string());
+        writer.emit_code("package·%L\n", vec![String::from(self.package_name)]);
         // writer.emit("\n");
     }
 }

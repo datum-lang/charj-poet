@@ -41,8 +41,7 @@ impl<'a> CodeWriter<'a> {
         }
     }
 
-    pub fn emit_code(&mut self, format: &str, args: String) {
-        // self._emit_code(format);
+    pub fn emit_code(&mut self, format: &str, args: Vec<String>) {
         CodeBlock::of(format, args);
     }
 
