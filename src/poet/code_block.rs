@@ -116,10 +116,37 @@ impl<T: Any> CodeBlockBuilder<T> {
             }
 
             p = p + 1; // '$'.
-            let index_start = p;
-            let c: char;
+            let index_start = p.clone();
+
+            p = p + 1;
+            let c: char = chars[p];
+
+            let index_end = p - 1;
+
+            let mut index = 0;
+            if index_start > index_end {
+                index = relative_parameter_count;
+                has_relative = true;
+                relative_parameter_count = relative_parameter_count + 1;
+            }
+
+            // self.add_argument(format, c, args[index as usize]);
         }
         self
+    }
+
+    pub fn add_argument(&mut self, format: &str, c: char, arg: T) {
+        match c {
+            'L' => {
+                self.arg_to_literal(arg);
+                // self.args.push(arg)
+            }
+            _ => {}
+        }
+    }
+
+    pub fn arg_to_literal(&self, arg: T) -> T {
+        return arg;
     }
 
     pub fn unindent(&mut self) -> &mut CodeBlockBuilder<T> {
