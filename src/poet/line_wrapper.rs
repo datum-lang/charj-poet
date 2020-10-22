@@ -122,13 +122,42 @@ impl<'a> LineWrapper<'a> {
         self.indent_level = -1
     }
 
-    pub fn emit_current_line(&mut self) {
-        let start = 0;
-        let column_length = self.segments[0].len();
-        for i in 1..column_length {
+    fn emit_current_line(&mut self) {
+        let mut start = 0;
+        let mut column_count = self.segments[0].len();
+        for i in 1..column_count {
             let segment = &self.segments[i];
-            let new_column_length = column_length + 1 + segment.len();
-            if newColumnCount > self.column_limit {}
+            let new_column_count = column_count + 1 + segment.len();
+            if new_column_count > self.column_limit as usize {
+                self.emit_segment_range(start, i as i32);
+                start = i as i32;
+                column_count = self.segments.len() + self.indent.len() + self.indent_level as usize;
+                continue;
+            }
+
+            column_count = new_column_count;
+        }
+
+        self.emit_segment_range(start, self.segments.len() as i32);
+
+        self.segments.clear();
+        self.segments.push(" ".to_string());
+    }
+
+    #[allow(unused_must_use)]
+    pub fn emit_segment_range(&mut self, start_index: i32, end_index: i32) {
+        if start_index > 0 {
+            write!(self.out, "\n");
+            for _i in 0..self.indent_level {
+                write!(self.out, "{}", self.indent);
+            }
+            write!(self.out, "{}", self.line_prefix);
+        }
+
+        write!(self.out, "{}", self.segments[start_index as usize]);
+        for i in start_index + 1..end_index {
+            write!(self.out, " ");
+            write!(self.out, "{}", self.segments[i as usize]);
         }
     }
 
