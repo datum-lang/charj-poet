@@ -398,6 +398,6 @@ mod tests {
         wrapper.append(String::from(" */"), None, None);
         wrapper.close();
 
-        assert_eq!("/**\n * a b c d\n * e f g h i j\n * k l m n\n */"", out);
+        assert_eq!("/**\n * a b c d\n * e f g h i j\n * k l m n\n */", out);
     }
 }
