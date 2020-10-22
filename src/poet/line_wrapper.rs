@@ -113,12 +113,13 @@ impl<'a> LineWrapper<'a> {
         }
     }
 
+    pub fn check(&mut self) {}
+
     pub fn new_line(&mut self) {
+        self.check();
+
         self.emit_current_line();
-        match write!(self.out, "\n") {
-            Ok(_) => {}
-            Err(err) => println!("{:?}", err),
-        }
+        write!(self.out, "\n");
         self.indent_level = -1
     }
 
@@ -134,7 +135,7 @@ impl<'a> LineWrapper<'a> {
             if new_column_count > self.column_limit as usize {
                 self.emit_segment_range(start, i as i32);
                 start = i as i32;
-                column_count = self.segments.len() + self.indent.len() + self.indent_level as usize;
+                column_count = self.segments.len() + self.indent.len() * self.indent_level as usize;
                 continue;
             }
 
@@ -210,5 +211,25 @@ mod tests {
         wrapper.close();
 
         assert_eq!("abcde\n    fghij", out);
+    }
+
+    #[test]
+    fn nowrap() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcde fghi"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("abcde fghi", out);
+    }
+
+    #[test]
+    fn multiple_write() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("ab cd ef gh ij kl mn op qr"), Some(1), None);
+        wrapper.close();
+
+        assert_eq!("abcde fghi", out);
     }
 }
