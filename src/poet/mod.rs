@@ -1,3 +1,5 @@
+pub const DEFAULT_INDENT: &str = "    ";
+
 pub mod annotation_spec;
 pub mod class_name;
 pub mod code_block;
