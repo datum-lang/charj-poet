@@ -87,7 +87,8 @@ impl<'a> LineWrapper<'a> {
 
                     let len = self.segments.len();
                     let i = next as usize - pos;
-                    self.segments[len - 1] = input.chars().skip(pos).take(i as usize).collect();
+                    let others: String = input.chars().skip(pos).take(i as usize).collect();
+                    self.segments[len - 1].push_str(others.as_str());
                     pos = next as usize;
                 }
             };
@@ -116,6 +117,7 @@ impl<'a> LineWrapper<'a> {
 
     pub fn check(&mut self) {}
 
+    #[allow(unused_must_use)]
     pub fn new_line(&mut self) {
         self.check();
 
@@ -128,12 +130,12 @@ impl<'a> LineWrapper<'a> {
      * Any segment that starts with '+' or '-' can't have a break preceding it. Combine it with the
      * preceding segment. Note that this doesn't apply to the first segment.
      */
+    #[allow(unused_must_use)]
     fn fold_unsafe_breaks(&mut self) {
         let mut i = 1;
         while i < self.segments.len() {
             let segment = &self.segments[i];
             if UNSAFE_LINE_START.is_match(segment) {
-                // segments.removeAt(i)
                 write!(self.segments[i - 1], " ");
                 let next = self.segments[i].clone();
                 write!(self.segments[i - 1], "{}", next);
@@ -256,5 +258,17 @@ mod tests {
         wrapper.close();
 
         assert_eq!("ab cd ef\n  gh ij kl\n  mn op qr", out);
+    }
+
+    #[test]
+    fn fencepost() {
+        let mut out = String::new();
+        let mut wrapper = LineWrapper::new(&mut out, String::from("  "), 10);
+        wrapper.append(String::from("abcde"), Some(2), None);
+        wrapper.append(String::from("fghij k"), Some(2), None);
+        wrapper.append(String::from("lmnop"), Some(2), None);
+        wrapper.close();
+
+        assert_eq!("abcdefghij\n    klmnop", out);
     }
 }
