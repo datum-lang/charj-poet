@@ -1,3 +1,4 @@
+use crate::poet::{index_of, index_of_any};
 use std::any::Any;
 use std::ops::Index;
 
@@ -102,11 +103,21 @@ impl<T: Any> CodeBlockBuilder<T> {
 
         let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args.len());
 
-        let chars = format.chars();
-        for p in 0..format.len() {
-            // if chars[p] != '$' {
-            //     format.index()
-            // }
+        let chars: Vec<char> = format.chars().collect();
+        for mut p in 0..format.len() {
+            if chars[p] != '$' {
+                let mut next_p = index_of(&chars, p);
+                if next_p == -1 {
+                    next_p = format.len() as i32;
+                }
+                let x: String = format.chars().skip(p).take(next_p as usize - p).collect();
+                self.format_parts.push(x);
+                continue;
+            }
+
+            p = p + 1; // '$'.
+            let index_start = p;
+            let c: char;
         }
         self
     }

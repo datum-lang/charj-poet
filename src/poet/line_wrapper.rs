@@ -1,3 +1,4 @@
+use crate::poet::index_of_any;
 use regex::Regex;
 use std::fmt::Write;
 
@@ -78,7 +79,7 @@ impl<'a> LineWrapper<'a> {
                     pos = pos + 1;
                 }
                 _ => {
-                    let mut next = LineWrapper::index_of_any(&*chars, SPECIAL_CHARACTERS, pos);
+                    let mut next = index_of_any(&*chars, SPECIAL_CHARACTERS, pos);
                     if next == -1 {
                         next = chars.len() as i32;
                     }
@@ -91,19 +92,6 @@ impl<'a> LineWrapper<'a> {
                 }
             };
         }
-    }
-
-    pub fn index_of_any(chars: &[char], special_chars: [char; 3], start_index: usize) -> i32 {
-        for index in start_index..chars.len() {
-            let ch: char = chars[index];
-            for schar in special_chars.iter() {
-                if *schar == ch {
-                    return index as i32;
-                }
-            }
-        }
-
-        return -1;
     }
 
     pub fn append_non_wrapping(&mut self, str: String) {
