@@ -133,10 +133,10 @@ impl CodeBlockBuilder {
                 continue;
             }
 
-            p = p + 1; // '$'.
+            p = p + 1; // '%'.
             let index_start = p.clone();
 
-            p = p + 1;
+            // p = p + 1;
             let c: char = chars[p];
 
             let index_end = p - 1;

@@ -50,16 +50,25 @@ impl<'a> CodeWriter<'a> {
         self._emit_code(code_block);
     }
 
-    fn _emit_code(&self, code_block: &CodeBlock) {
-        let a: i32 = 0;
+    fn _emit_code(&mut self, code_block: &CodeBlock) {
+        let mut a: usize = 0;
         for part in code_block.format_parts.iter() {
             println!("{:?}", part);
 
-            match part {
+            match &*part.clone() {
+                "%L" => {
+                    a = a + 1;
+                    self.emit_literal(code_block.format_parts[a].clone());
+                }
                 _ => {}
             }
         }
     }
+
+    pub fn emit_literal(&mut self, arg: String) {
+        self.emit(arg);
+    }
+
     pub fn push_package(&mut self, package_name: &str) {
         self.package_name = String::from(package_name);
     }
