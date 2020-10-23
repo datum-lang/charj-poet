@@ -147,7 +147,7 @@ impl CodeBlockBuilder {
             }
 
             self.add_argument(format, c, args[index as usize].clone());
-            let merge_char = CodeBlockBuilder::merge_str_c("$", c);
+            let merge_char = CodeBlockBuilder::merge_str_c("%", c);
             self.format_parts.push(merge_char);
         }
         self
@@ -173,12 +173,12 @@ impl CodeBlockBuilder {
     }
 
     pub fn unindent(&mut self) -> &mut CodeBlockBuilder {
-        self.format_parts.push(String::from("$<"));
+        self.format_parts.push(String::from("⇤"));
         self
     }
 
     pub fn indent<'a>(&mut self) -> &mut CodeBlockBuilder {
-        self.format_parts.push(String::from("$>"));
+        self.format_parts.push(String::from("⇥"));
         self
     }
 }
