@@ -59,12 +59,12 @@ impl CodeBlock {
 }
 
 impl fmt::Display for CodeBlock {
-    fn fmt(&self, _fmt: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let mut out = String::new();
         let mut writer = CodeWriter::new(&mut out, DEFAULT_INDENT);
         writer.emit_block(&self);
-        println!("{}", out);
-        Ok(())
+        writer.close();
+        write!(f, "{}", out)
     }
 }
 
@@ -193,6 +193,6 @@ mod tests {
     #[test]
     fn of() {
         let code_block = CodeBlock::of("%L taco", vec![String::from("delicious")]);
-        println!("{}", code_block);
+        assert_eq!("delicious taco", format!("{}", code_block));
     }
 }
