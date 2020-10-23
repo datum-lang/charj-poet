@@ -120,14 +120,16 @@ impl CodeBlockBuilder {
         let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args.len());
 
         let chars: Vec<char> = format.chars().collect();
-        for mut p in 0..format.len() {
+        let mut p = 0;
+        while p < format.len() {
             if chars[p] != '%' {
-                let mut next_p = index_of(&chars, p);
+                let mut next_p = index_of(&chars, p + 1);
                 if next_p == -1 {
                     next_p = format.len() as i32;
                 }
                 let x: String = format.chars().skip(p).take(next_p as usize - p).collect();
                 self.format_parts.push(x);
+                p = next_p as usize;
                 continue;
             }
 
