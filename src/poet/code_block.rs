@@ -136,8 +136,8 @@ impl CodeBlockBuilder {
             p = p + 1; // '%'.
             let index_start = p.clone();
 
-            // p = p + 1;
             let c: char = chars[p];
+            p = p + 1;
 
             let index_end = p - 1;
 
