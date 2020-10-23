@@ -93,11 +93,12 @@ impl<'a> CodeWriter<'a> {
         for part in code_block.format_parts.iter() {
             match &*part.clone() {
                 "%L" => {
+                    self.emit_literal(code_block.args[a].clone());
                     a = a + 1;
-                    self.emit_literal(code_block.format_parts[a].clone());
                 }
                 _ => {
                     // Handle deferred type.
+                    // println!("Handle deferred type");
                     self.emit(part.clone());
                 }
             }

@@ -60,7 +60,7 @@ impl CodeBlock {
 
 impl fmt::Display for CodeBlock {
     fn fmt(&self, _fmt: &mut Formatter<'_>) -> fmt::Result {
-        let mut out = "".to_string();
+        let mut out = String::new();
         let mut writer = CodeWriter::new(&mut out, DEFAULT_INDENT);
         writer.emit_block(&self);
         println!("{}", out);
