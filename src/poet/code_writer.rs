@@ -74,6 +74,13 @@ impl<'a> CodeWriter<'a> {
             if self.trailing_newline {
                 // emitIndentation
             }
+
+            self.out.append(
+                String::from(line),
+                Some(self.indent_level + 2),
+                Some(String::from("")),
+            );
+            self.trailing_newline = false;
         }
     }
 
@@ -91,6 +98,7 @@ impl<'a> CodeWriter<'a> {
                 }
                 _ => {
                     // Handle deferred type.
+                    self.emit(part.clone());
                 }
             }
         }

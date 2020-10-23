@@ -63,6 +63,7 @@ impl fmt::Display for CodeBlock {
         let mut out = "".to_string();
         let mut writer = CodeWriter::new(&mut out, DEFAULT_INDENT);
         writer.emit_block(&self);
+        println!("{}", out);
         Ok(())
     }
 }
