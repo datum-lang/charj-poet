@@ -135,12 +135,29 @@ impl CodeBlockBuilder {
             }
 
             p = p + 1; // '%'.
-            let index_start = p.clone();
 
-            let c: char = chars[p];
-            p = p + 1;
+            let index_start = p.clone();
+            let mut c: char;
+            loop {
+                c = chars[p];
+                p = p + 1;
+
+                if !('0' <= c && c <= '9') {
+                    break;
+                }
+            }
 
             let index_end = p - 1;
+            if c == '%' {
+                if index_start != index_end {
+                    panic!("%% may not have an index");
+                }
+
+                let merge_char = CodeBlockBuilder::merge_str_c("%", c);
+                self.format_parts.push(merge_char);
+
+                continue;
+            }
 
             let mut index = 0;
             if index_start > index_end {
@@ -154,6 +171,10 @@ impl CodeBlockBuilder {
             self.format_parts.push(merge_char);
         }
         self
+    }
+
+    fn is_multi_char_no_arg_placeholder(c: char) -> bool {
+        return c == '%';
     }
 
     fn merge_str_c(s: &str, c: char) -> String {
@@ -188,11 +209,18 @@ impl CodeBlockBuilder {
 
 #[cfg(test)]
 mod tests {
-    use crate::poet::code_block::CodeBlock;
+    use crate::poet::code_block::{CodeBlock, CodeBlockBuilder};
 
     #[test]
     fn of() {
         let code_block = CodeBlock::of("%L taco", vec![String::from("delicious")]);
         assert_eq!("delicious taco", format!("{}", code_block));
+    }
+
+    #[test]
+    #[should_panic]
+    fn percent_escape_cannot_be_indexed() {
+        let mut builder = CodeBlockBuilder::new();
+        builder.add("%1%", vec![String::from("taco")]);
     }
 }
