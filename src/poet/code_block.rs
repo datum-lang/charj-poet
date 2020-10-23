@@ -59,7 +59,7 @@ impl CodeBlock {
 }
 
 impl fmt::Display for CodeBlock {
-    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, _fmt: &mut Formatter<'_>) -> fmt::Result {
         let mut out = "".to_string();
         CodeWriter::new(&mut out, DEFAULT_INDENT);
         Ok(())
@@ -120,7 +120,7 @@ impl CodeBlockBuilder {
 
         let chars: Vec<char> = format.chars().collect();
         for mut p in 0..format.len() {
-            if chars[p] != '$' {
+            if chars[p] != '%' {
                 let mut next_p = index_of(&chars, p);
                 if next_p == -1 {
                     next_p = format.len() as i32;
