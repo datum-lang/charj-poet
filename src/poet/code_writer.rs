@@ -46,11 +46,11 @@ impl<'a> CodeWriter<'a> {
 
     pub fn emit(&mut self, s: String) {}
 
-    pub fn emit_block(&mut self, code_block: &mut CodeBlock) {
+    pub fn emit_block(&mut self, code_block: &CodeBlock) {
         self._emit_code(code_block);
     }
 
-    fn _emit_code(&self, code_block: &mut CodeBlock) {
+    fn _emit_code(&self, code_block: &CodeBlock) {
         let a: i32 = 0;
         for part in code_block.format_parts.iter() {
             println!("{:?}", part);

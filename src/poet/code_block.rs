@@ -61,7 +61,8 @@ impl CodeBlock {
 impl fmt::Display for CodeBlock {
     fn fmt(&self, _fmt: &mut Formatter<'_>) -> fmt::Result {
         let mut out = "".to_string();
-        CodeWriter::new(&mut out, DEFAULT_INDENT);
+        let mut writer = CodeWriter::new(&mut out, DEFAULT_INDENT);
+        writer.emit_block(&self);
         Ok(())
     }
 }
@@ -146,8 +147,8 @@ impl CodeBlockBuilder {
             }
 
             self.add_argument(format, c, args[index as usize].clone());
-            self.format_parts
-                .push(CodeBlockBuilder::merge_str_c("$", c));
+            let merge_char = CodeBlockBuilder::merge_str_c("$", c);
+            self.format_parts.push(merge_char);
         }
         self
     }
@@ -188,7 +189,7 @@ mod tests {
 
     #[test]
     fn of() {
-        let code_block = CodeBlock::of("$L taco", vec![String::from("delicious")]);
+        let code_block = CodeBlock::of("%L taco", vec![String::from("delicious")]);
         println!("{}", code_block);
     }
 }
