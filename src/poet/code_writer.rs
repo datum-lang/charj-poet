@@ -46,7 +46,20 @@ impl<'a> CodeWriter<'a> {
 
     pub fn emit(&mut self, s: String) {}
 
-    fn _emit_code(code_block: &mut CodeBlock, format: &str) {}
+    pub fn emit_block(&mut self, code_block: &mut CodeBlock) {
+        self._emit_code(code_block);
+    }
+
+    fn _emit_code(&self, code_block: &mut CodeBlock) {
+        let a: i32 = 0;
+        for part in code_block.format_parts.iter() {
+            println!("{:?}", part);
+
+            match part {
+                _ => {}
+            }
+        }
+    }
     pub fn push_package(&mut self, package_name: &str) {
         self.package_name = String::from(package_name);
     }

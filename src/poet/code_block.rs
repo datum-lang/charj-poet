@@ -38,11 +38,17 @@ use serde::export::Formatter;
 /// * `»` ends a statement.
 ///
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CodeBlock {}
+pub struct CodeBlock {
+    pub format_parts: Vec<String>,
+    pub args: Vec<String>,
+}
 
 impl CodeBlock {
-    pub fn new(_builder: &CodeBlockBuilder) -> Self {
-        CodeBlock {}
+    pub fn new(builder: &CodeBlockBuilder) -> Self {
+        CodeBlock {
+            format_parts: builder.format_parts.clone(),
+            args: builder.args.clone(),
+        }
     }
 
     pub fn of(format: &str, args: Vec<String>) -> CodeBlock {
@@ -183,6 +189,6 @@ mod tests {
     #[test]
     fn of() {
         let code_block = CodeBlock::of("$L taco", vec![String::from("delicious")]);
-        // println!()
+        println!("{}", code_block);
     }
 }
