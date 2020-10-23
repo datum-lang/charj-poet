@@ -247,4 +247,11 @@ mod tests {
         let block = builder.add("%1L", vec![String::from("taco")]).build();
         assert_eq!("taco", format!("{}", block));
     }
+
+    // #[test]
+    // fn string_format_can_be_indexed() {
+    //     let mut builder = CodeBlockBuilder::new();
+    //     let block = builder.add("%1S", vec![String::from("taco")]).build();
+    //     assert_eq!("\"taco\"", format!("{}", block));
+    // }
 }

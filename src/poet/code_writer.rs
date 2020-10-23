@@ -96,6 +96,10 @@ impl<'a> CodeWriter<'a> {
                     self.emit_literal(code_block.args[a].clone());
                     a = a + 1;
                 }
+                "%S" => {
+                    let string = code_block.args[a].clone();
+                    CodeWriter::string_literal_with_quotes();
+                }
                 _ => {
                     // Handle deferred type.
                     // println!("Handle deferred type");
@@ -103,6 +107,26 @@ impl<'a> CodeWriter<'a> {
                 }
             }
         }
+    }
+
+    pub fn string_literal_with_quotes(
+        value: String,
+        _escape_dollar_sign: Option<bool>,
+        _is_constant_context: Option<bool>,
+    ) {
+        let escape_dollar_sign: bool;
+        match _escape_dollar_sign {
+            None => escape_dollar_sign = true,
+            Some(value) => escape_dollar_sign = value,
+        }
+
+        let is_constant_context: bool;
+        match _is_constant_context {
+            None => is_constant_context = false,
+            Some(value) => is_constant_context = value,
+        }
+
+        if !is_constant_context && value.contains("\n") {}
     }
 
     pub fn emit_literal(&mut self, arg: String) {
