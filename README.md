@@ -4,6 +4,13 @@ inspired by [JavaPoet](https://github.com/square/javapoet)
 
 CharjPoet is a Rust API for generating `.cj` source files.
 
+## Development
+
+## Documents
+
+## Format
+
+
 
 License
 ---
