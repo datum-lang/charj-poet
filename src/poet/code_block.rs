@@ -118,7 +118,7 @@ impl CodeBlockBuilder {
         let mut has_indexed: bool = false;
         let mut relative_parameter_count: i32 = 0;
 
-        let mut indexed_parameter_count: Vec<i32> = Vec::with_capacity(args.len());
+        let mut indexed_parameter_count: Vec<i32> = vec![0; args.len()];
 
         let chars: Vec<char> = format.chars().collect();
         let mut p = 0;
@@ -152,15 +152,26 @@ impl CodeBlockBuilder {
                 if index_start != index_end {
                     panic!("%% may not have an index");
                 }
-
                 let merge_char = CodeBlockBuilder::merge_str_c("%", c);
                 self.format_parts.push(merge_char);
-
                 continue;
             }
 
-            let mut index = 0;
-            if index_start > index_end {
+            let mut index;
+            if index_start < index_end {
+                let index_str: String = format
+                    .chars()
+                    .skip(index_start)
+                    .take(index_end - index_start)
+                    .collect();
+                index = index_str.parse::<i32>().unwrap() - 1;
+
+                has_indexed = true;
+                if args.len() != 0 {
+                    let modulo = index as usize % args.len(); // modulo is needed, checked below anyway
+                    indexed_parameter_count[modulo] = indexed_parameter_count[modulo] + 1;
+                }
+            } else {
                 index = relative_parameter_count;
                 has_relative = true;
                 relative_parameter_count = relative_parameter_count + 1;
@@ -170,6 +181,12 @@ impl CodeBlockBuilder {
             let merge_char = CodeBlockBuilder::merge_str_c("%", c);
             self.format_parts.push(merge_char);
         }
+
+        // todo: add unused check
+        // if has_indexed {
+        //     let unused = vec![];
+        // }
+
         self
     }
 
@@ -222,5 +239,12 @@ mod tests {
     fn percent_escape_cannot_be_indexed() {
         let mut builder = CodeBlockBuilder::new();
         builder.add("%1%", vec![String::from("taco")]);
+    }
+
+    #[test]
+    fn name_format_can_be_indexed() {
+        let mut builder = CodeBlockBuilder::new();
+        let block = builder.add("%1L", vec![String::from("taco")]).build();
+        assert_eq!("taco", format!("{}", block));
     }
 }
