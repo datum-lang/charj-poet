@@ -21,6 +21,7 @@ pub struct CodeWriter<'a> {
     pub column_limit: i32,
     pub indent_level: i32,
     pub statement_line: i32,
+    trailing_newline: bool,
 }
 
 impl<'a> CodeWriter<'a> {
@@ -37,6 +38,7 @@ impl<'a> CodeWriter<'a> {
             column_limit: 100,
             indent_level: 0,
             statement_line: -1,
+            trailing_newline: false,
         }
     }
 
@@ -44,7 +46,36 @@ impl<'a> CodeWriter<'a> {
         CodeBlock::of(format, args);
     }
 
-    pub fn emit(&mut self, s: String) {}
+    pub fn indent(&mut self, levels: i32) {
+        self.indent_level = self.indent_level + 1;
+    }
+
+    pub fn emit(&mut self, s: String) {
+        let mut first = true;
+        for line in s.split("\n") {
+            if !first {
+                self.out.new_line();
+                self.trailing_newline = true;
+
+                if self.statement_line != -1 {
+                    if self.statement_line == 0 {
+                        self.indent(2);
+                    }
+                    self.statement_line = self.statement_line + 1
+                }
+            }
+
+            first = false;
+
+            if line.len() == 0 {
+                continue;
+            }
+
+            if self.trailing_newline {
+                // emitIndentation
+            }
+        }
+    }
 
     pub fn emit_block(&mut self, code_block: &CodeBlock) {
         self._emit_code(code_block);
@@ -53,14 +84,14 @@ impl<'a> CodeWriter<'a> {
     fn _emit_code(&mut self, code_block: &CodeBlock) {
         let mut a: usize = 0;
         for part in code_block.format_parts.iter() {
-            println!("{:?}", part);
-
             match &*part.clone() {
                 "%L" => {
                     a = a + 1;
                     self.emit_literal(code_block.format_parts[a].clone());
                 }
-                _ => {}
+                _ => {
+                    // Handle deferred type.
+                }
             }
         }
     }
