@@ -268,4 +268,12 @@ mod tests {
         let block = builder.add("%1T", vec![String::from("kotlin.String")]).build();
         assert_eq!("kotlin.String", format!("{}", block));
     }
+
+    #[test]
+    #[rustfmt::skip]
+    fn same_index_can_be_used_with_different_formats() {
+        let mut builder = CodeBlockBuilder::new();
+        let block = builder.add("%1T.out.println(%1S)", vec![String::from("java.lang.System")]).build();
+        assert_eq!("java.lang.System.out.println(\"java.lang.System\")", format!("{}", block));
+    }
 }

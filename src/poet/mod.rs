@@ -24,7 +24,7 @@ pub mod wildcard_type_name;
 pub fn index_of(chars: &Vec<char>, p: usize) -> i32 {
     let mut index: i32 = -1;
     for i in p + 1..chars.len() {
-        if chars[i] == '$' {
+        if chars[i] == '%' {
             index = i as i32;
         }
     }
