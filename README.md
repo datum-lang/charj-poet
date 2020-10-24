@@ -6,10 +6,20 @@ CharjPoet is a Rust API for generating `.cj` source files.
 
 ## Development
 
+ - [JavaPoet](https://github.com/square/javapoet)
+ - [KotlinPoet](https://github.com/square/kotlinpoet)
+ - [GoPoet](https://github.com/jhump/gopoet)
+
 ## Documents
 
 ## Format
 
+ - %T, Types
+ - %L, Literals
+ - %S, String
+ - %N, Names
+ - %M, Members
+ - %P, String Templates
 
 
 License
