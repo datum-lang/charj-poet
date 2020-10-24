@@ -47,10 +47,10 @@ pub fn index_of_any(chars: &[char], special_chars: [char; 3], start_index: usize
 
 pub fn string_literal_with_quotes(
     value: String,
-    indent: String,
+    indent: &str,
     // _escape_dollar_sign: Option<bool>,
     // _is_constant_context: Option<bool>,
-) {
+) -> String {
     // let escape_dollar_sign: bool;
     // match _escape_dollar_sign {
     //     None => escape_dollar_sign = true,
@@ -65,7 +65,7 @@ pub fn string_literal_with_quotes(
 
     // if !is_constant_context && value.contains("\n") {
     let mut result = String::new();
-    result.push_str("\"\"\"\n|");
+    result.push_str("\"");
     let mut i = 0;
 
     let chars: Vec<char> = value.chars().collect();
@@ -81,8 +81,18 @@ pub fn string_literal_with_quotes(
         }
 
         result.push_str(&*character_literal_without_single_quotes(c));
+        if c == '\n' && i + 1 < value.len() {
+            result.push_str("\"\n");
+            result.push_str(&*indent);
+            result.push_str(&*indent);
+            result.push_str("+ \"");
+        }
+        i = i + 1;
     }
+
+    result.push_str("\"");
     // }
+    return result;
 }
 
 pub fn character_literal_without_single_quotes(c: char) -> String {
@@ -107,7 +117,13 @@ pub fn character_literal_without_single_quotes(c: char) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::poet::character_literal_without_single_quotes;
+    use crate::poet::{character_literal_without_single_quotes, string_literal_with_quotes};
+
+    #[test]
+    #[rustfmt::skip]
+    fn string_literal() {
+        assert_eq!("\"abc\"", string_literal_with_quotes(String::from("abc"), " "));
+    }
 
     #[test]
     #[rustfmt::skip]
