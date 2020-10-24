@@ -205,6 +205,9 @@ impl CodeBlockBuilder {
             'L' => {
                 self.args.push(self.arg_to_literal(arg));
             }
+            'S' => {
+                self.args.push(self.arg_to_literal(arg));
+            }
             _ => println!("invalid format string: {:?}", format),
         }
     }
@@ -248,10 +251,10 @@ mod tests {
         assert_eq!("taco", format!("{}", block));
     }
 
-    // #[test]
-    // fn string_format_can_be_indexed() {
-    //     let mut builder = CodeBlockBuilder::new();
-    //     let block = builder.add("%1S", vec![String::from("taco")]).build();
-    //     assert_eq!("\"taco\"", format!("{}", block));
-    // }
+    #[test]
+    fn string_format_can_be_indexed() {
+        let mut builder = CodeBlockBuilder::new();
+        let block = builder.add("%1S", vec![String::from("taco")]).build();
+        assert_eq!("\"taco\"", format!("{}", block));
+    }
 }

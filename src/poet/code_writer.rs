@@ -3,6 +3,7 @@ use crate::poet::code_block::CodeBlock;
 use crate::poet::import::Import;
 use crate::poet::line_wrapper::LineWrapper;
 use crate::poet::member_name::MemberName;
+use crate::poet::string_literal_with_quotes;
 use std::collections::HashMap;
 
 pub const NO_PACKAGE: &'static str = "";
@@ -98,7 +99,8 @@ impl<'a> CodeWriter<'a> {
                 }
                 "%S" => {
                     let string = code_block.args[a].clone();
-                    // string_literal_with_quotes();
+                    let literal = string_literal_with_quotes(&*string, self.indent);
+                    self.emit(literal);
                 }
                 _ => {
                     // Handle deferred type.
