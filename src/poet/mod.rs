@@ -96,8 +96,11 @@ pub fn character_literal_without_single_quotes(c: char) -> String {
         '\'' => String::from("\\'"),   /* \u0027: single quote (') */
         '\\' => String::from("\\\\"),  /* \u005c: backslash (\) */
         _ => {
-            c.to_string()
-            // return isISOControl(c) ? String.format("\\u%04x", (int) c) : Character.toString(c);
+            if c.is_ascii() {
+                return c.to_string();
+            } else {
+                return c.escape_unicode().to_string();
+            }
         }
     }
 }
@@ -109,5 +112,19 @@ mod tests {
     #[test]
     fn character_literal() {
         assert_eq!("a", character_literal_without_single_quotes('a'));
+        // common escapes
+
+        // unicode escapes
+        assert_eq!(
+            "\u{0000}",
+            character_literal_without_single_quotes('\u{0000}')
+        );
+
+        // unicode escapes
+        assert_eq!(
+            "\\u{20ac}",
+            character_literal_without_single_quotes('\u{20AC}')
+        );
+        // assert_eq!("€", character_literal_without_single_quotes('\u{20AC}'));
     }
 }
