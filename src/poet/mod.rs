@@ -110,21 +110,16 @@ mod tests {
     use crate::poet::character_literal_without_single_quotes;
 
     #[test]
+    #[rustfmt::skip]
     fn character_literal() {
         assert_eq!("a", character_literal_without_single_quotes('a'));
         // common escapes
 
         // unicode escapes
-        assert_eq!(
-            "\u{0000}",
-            character_literal_without_single_quotes('\u{0000}')
-        );
+        assert_eq!("\u{0000}", character_literal_without_single_quotes('\u{0000}'));
 
         // unicode escapes
-        assert_eq!(
-            "\\u{20ac}",
-            character_literal_without_single_quotes('\u{20AC}')
-        );
+        assert_eq!("\\u{20ac}", character_literal_without_single_quotes('\u{20AC}'));
         // assert_eq!("€", character_literal_without_single_quotes('\u{20AC}'));
     }
 }
