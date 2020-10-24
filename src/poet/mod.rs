@@ -46,7 +46,7 @@ pub fn index_of_any(chars: &[char], special_chars: [char; 3], start_index: usize
 }
 
 pub fn string_literal_with_quotes(
-    value: String,
+    value: &str,
     indent: &str,
     // _escape_dollar_sign: Option<bool>,
     // _is_constant_context: Option<bool>,
@@ -66,11 +66,10 @@ pub fn string_literal_with_quotes(
     // if !is_constant_context && value.contains("\n") {
     let mut result = String::new();
     result.push_str("\"");
-    let mut i = 0;
 
     let chars: Vec<char> = value.chars().collect();
-    while i < value.len() {
-        let c = chars[i];
+    let mut i = 0;
+    for c in chars {
         if c == '\'' {
             result.push_str("'");
             continue;
@@ -122,7 +121,8 @@ mod tests {
     #[test]
     #[rustfmt::skip]
     fn string_literal() {
-        assert_eq!("\"abc\"", string_literal_with_quotes(String::from("abc"), " "));
+        assert_eq!("\"abc\"", string_literal_with_quotes("abc", " "));
+        assert_eq!("\"\\u{2666}\\u{2665}\\u{2660}\\u{2663}\"", string_literal_with_quotes("♦♥♠♣", " "));
     }
 
     #[test]
