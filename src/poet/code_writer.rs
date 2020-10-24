@@ -102,6 +102,10 @@ impl<'a> CodeWriter<'a> {
                     let literal = string_literal_with_quotes(&*string, self.indent);
                     self.emit(literal);
                 }
+                "%T" => {
+                    self.emit_literal(code_block.args[a].clone());
+                    a = a + 1;
+                }
                 _ => {
                     // Handle deferred type.
                     // println!("Handle deferred type");
