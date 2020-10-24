@@ -276,4 +276,16 @@ mod tests {
         let block = builder.add("%1T.out.println(%1S)", vec![String::from("java.lang.System")]).build();
         assert_eq!("java.lang.System.out.println(\"java.lang.System\")", format!("{}", block));
     }
+
+    // #[test]
+    // #[rustfmt::skip]
+    // fn test_join() {
+    //     let mut blocks: Vec<CodeBlock> = vec![];
+    //     blocks.push(CodeBlock::of("$S", vec![String::from("hello")]));
+    //     blocks.push(CodeBlock::of("$T", vec![String::from("world.World")]));
+    //     blocks.push(CodeBlock::of("need tacos", vec![]));
+    //
+    //     let result = format!("{} || {} || {}", blocks[0], blocks[1], blocks[2]);
+    //     assert_eq!("\"hello\" || world.World || need tacos", result);
+    // }
 }
