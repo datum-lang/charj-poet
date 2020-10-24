@@ -123,6 +123,10 @@ mod tests {
     fn string_literal() {
         assert_eq!("\"abc\"", string_literal_with_quotes("abc", " "));
         assert_eq!("\"\\u{2666}\\u{2665}\\u{2660}\\u{2663}\"", string_literal_with_quotes("♦♥♠♣", " "));
+        assert_eq!("\"\\u{20ac}\\t@\\t$\"", string_literal_with_quotes("€\t@\t$", " "));
+        assert_eq!("\"abc();\\n\"\n  + \"def();\"", string_literal_with_quotes("abc();\ndef();", " "));
+        assert_eq!("\"This is \\\"quoted\\\"!\"", string_literal_with_quotes("This is \"quoted\"!", " "));
+        assert_eq!("\"e^{i\\\\pi}+1=0\"", string_literal_with_quotes("e^{i\\pi}+1=0", " "));
     }
 
     #[test]
